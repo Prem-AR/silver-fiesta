@@ -1,0 +1,225 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+   
+   struct nod
+    {
+	int data;
+	struct nod *next;
+    };
+
+    typedef struct nod* Node; 
+    Node head; //Head is globally declared
+
+    //Creating a new node
+    Node getnode(int x)
+    {
+    Node newnode=(Node)malloc(sizeof(Node));
+    newnode->data=x;
+    newnode->next=NULL;
+    return newnode;
+    }
+
+    //Insertion of a newnode at the end
+    void insert(int x)
+    {
+    Node node=getnode(x);
+    if(head==NULL)
+    {
+    head=node;
+    }
+    else
+    {
+    Node n=head;
+    while(n->next!=NULL)
+    {
+      n=n->next;
+    }
+    n->next=node;
+    }
+    }
+
+    //Insertion of a newnode at the begining
+    void insertatfirst(int x)
+    {
+    Node node=getnode(x);
+    node->next=head;
+    head=node;
+    }
+
+    //Insertion of a newnode at a given position
+    void insertatpos(int index,int x)
+    {
+    int i;
+    Node node=getnode(x);
+    if(index==0)
+    {
+    insertatfirst(x);
+    }
+    else{
+       Node n=head;
+    for(i=0;i<index-1;i++)
+    {
+    n=n->next;
+    }
+    node->next=n->next;
+    n->next=node;
+    }
+    }
+
+    //Delete a node at a given position
+    void deleteatpos(int index)
+    {
+    int i;
+    Node n=head;
+    Node n1=NULL;
+    for(i=0;i<index-1;i++)
+    {
+      n=n->next;
+      }
+      n1=n->next;
+      n->next=n1->next;
+      n1=NULL;
+    }
+
+    //Delete a node in the bigining
+      void deleteatfirst()
+      {
+      head=head->next;
+      }
+
+      //Finding the previous element
+      Node findprevious(int x)
+      {
+      Node n=head;
+      while(n->next!=NULL&&n->next->data!=x)
+      {
+      n=n->next;
+      }
+      return n;
+      }
+
+      //Deleting the last node
+      void deleteatend()
+      {
+      Node n=head;
+      while(n->next!=NULL)
+      {
+      n=n->next;
+      }
+      Node lastnode=findprevious(n->data);
+      lastnode->next=NULL;
+      }
+
+      //Finding whether a node is last or not
+      int islast(Node n)
+      {
+      if(n->next==NULL)
+      return 1;
+      else
+      return 0;
+      }
+
+      //Finding the next element
+      Node findnext(int x)
+      {
+      Node n=head;
+      while(n!=NULL&&n->data!=x)
+      {
+      n=n->next;
+      }
+      if(!islast(n))
+      return n->next;
+      else
+      return NULL;
+      }
+
+     //Finding the position of the given element
+     void find(int x)
+     {
+     int count=0;
+     Node n=head;
+     while(n!=NULL&&n->data!=x)
+     {
+     n=n->next;
+     count++;
+     }
+     printf("position of %d is %d\n",x,count);
+     }
+
+     //Reversing the linked list
+    void reverse()
+    {
+    Node prev,current,nextelement;
+    current=head;
+    prev=NULL;
+    while(current!=NULL)
+    {
+    nextelement=current->next;
+    current->next=prev;
+    prev=current;
+    current=nextelement;
+    }
+    head=prev;
+    }
+
+    //Displaying the elements in the linked list
+    void print()
+    {
+     Node n=head;
+    while(n->next!=NULL)
+    {
+    printf("%d->",n->data);
+    n=n->next;
+    }
+    printf("%d\n",n->data);
+    }
+
+void main()
+{
+int x,choice=1;
+clrscr();
+    while (choice)
+    {
+	printf("Enter the data item\n");
+	scanf("%d", &x);
+	insert(x);
+	printf("Do you want to continue(Type 0 or 1)?\n");
+	scanf("%d", &choice);
+    }
+    printf("Newly created list:");
+    print();
+   
+    insertatfirst(100);
+    printf("After inserting a node at the begining:");
+    print();
+
+    insertatpos(3,300);
+    printf("After inserting a node at a given position:");
+    print();
+
+    deleteatpos(2);
+    printf("After deleting a node at a given position:");
+    print();
+
+    deleteatfirst();
+    printf("After deleting a node at the begining:");
+    print();
+
+    deleteatend();
+    printf("After deleting a node at the end:");
+    print();
+
+    Node temp=findprevious(3);
+    printf("previous element of 3 is %d\n",temp->data);
+
+    temp=findnext(3);
+    printf("next element of 3 is %d\n",temp->data);
+
+    find(3);
+
+    reverse();
+    printf("After reversing the linked list:");
+    print();
+   getch();
+}
